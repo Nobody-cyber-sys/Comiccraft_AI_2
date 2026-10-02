@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComicCraft - AI Comic Story Creator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Bangers&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff5252;
+            --primary-hover: #ff2a2a;
+            --secondary: #ffb703;
+            --accent: #7209b7;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+            --comic-border: 3px solid #111111;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f0f2f5;
+            background-image: 
+                radial-gradient(#e2e8f0 1.5px, transparent 1.5px),
+                linear-gradient(135deg, rgba(255, 235, 238, 0.6) 0%, rgba(237, 231, 246, 0.6) 100%);
+            background-size: 24px 24px, 100% 100%;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: var(--comic-border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #111111 0%, #2b2d42 100%);
+            color: #ffffff;
+            padding: 36px 30px;
+            text-align: center;
+            border-bottom: var(--comic-border);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 3.2rem;
+            letter-spacing: 2px;
+            color: var(--secondary);
+            text-shadow: 3px 3px 0px #000;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            font-weight: 400;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        form {
+            padding: 36px 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-dark);
+            background-color: #fafafa;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(114, 9, 183, 0.15);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            margin-top: 24px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff5252 0%, #d90429 100%);
+            color: white;
+            border: var(--comic-border);
+            border-radius: 12px;
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #000;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #000;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ef233c 100%);
+        }
+
+        .btn-submit:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #000;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #e2e8f0;
+            border-top: 6px solid var(--primary);
+            border-right: 6px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .loading-subtext {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            body {
+                padding: 16px 10px;
+            }
+            .header h1 {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <span class="badge">AI Comic Engine</span>
+        <h1>ComicCraft</h1>
+        <p>Turn your imagination into a 5-panel comic masterpiece</p>
+    </div>
+
+    <!-- Form -->
+    <form action="/generate" method="POST" id="comicForm">
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label for="prompt">💡 Story Concept / Prompt</label>
+                <textarea id="prompt" name="prompt" placeholder="e.g. A young cybernetic detective unravels a mystery inside a neo-tokyo noodle shop." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="character_name">🦸 Main Character</label>
+                <input type="text" id="character_name" name="character_name" placeholder="e.g. Maya, cyber-enhanced detective" required>
+            </div>
+
+            <div class="form-group">
+                <label for="setting">🏙️ Setting / World</label>
+                <input type="text" id="setting" name="setting" placeholder="e.g. Rain-slicked Neo-Tokyo alleyways" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tone">🎭 Story Tone</label>
+                <select id="tone" name="tone" required>
+                    <option value="Heroic & Action-packed">Heroic & Action-packed</option>
+                    <option value="Dark & Mysterious">Dark & Mysterious</option>
+                    <option value="Humorous & Whimsical">Humorous & Whimsical</option>
+                    <option value="Sci-Fi & Futuristic">Sci-Fi & Futuristic</option>
+                    <option value="Fantasy & Mythical">Fantasy & Mythical</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="art_style">🎨 Art Style</label>
+                <select id="art_style" name="art_style" required>
+                    <option value="Classic American Comic Book">Classic American Comic</option>
+                    <option value="Japanese Anime & Manga">Japanese Anime / Manga</option>
+                    <option value="Dark Noir Ink Illustration">Dark Noir Ink</option>
+                    <option value="Vibrant Cyberpunk Concept Art">Vibrant Cyberpunk</option>
+                    <option value="Watercolor Fantasy Storybook">Watercolor Storybook</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">🚀 Craft My Comic!</button>
+    </form>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Crafting Your Comic Panels...</div>
+        <div class="loading-subtext">Generating outline, story, and AI artwork. Please wait 15-30 seconds.</div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('comicForm');
+    const overlay = document.getElementById('loadingOverlay');
+
+    form.addEventListener('submit', function() {
+        overlay.style.display = 'flex';
+    });
+</script>
+</body>
+</html>

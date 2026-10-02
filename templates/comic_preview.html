@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Preview - ComicCraft</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Bangers&family=Comic+Neue:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff5252;
+            --secondary: #ffb703;
+            --accent: #7209b7;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --comic-border: 3.5px solid #111111;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-dark);
+            padding: 40px 20px;
+        }
+
+        .main-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header-bar {
+            background: #111;
+            color: #fff;
+            padding: 24px 30px;
+            border-radius: 16px;
+            border: var(--comic-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 0 #222;
+        }
+
+        .header-title h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            letter-spacing: 1.5px;
+        }
+
+        .header-title p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            cursor: pointer;
+            border: 2px solid #000;
+            box-shadow: 0 4px 0 #000;
+            transition: all 0.15s ease;
+        }
+
+        .btn-pdf {
+            background: #ffb703;
+            color: #000;
+        }
+
+        .btn-pdf:hover {
+            background: #ffc300;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #000;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #000;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #000;
+        }
+
+        /* Comic Panel List */
+        .panels-container {
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+
+        .panel-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: var(--comic-border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: #f1f5f9;
+            padding: 14px 24px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-number {
+            font-family: 'Bangers', cursive;
+            font-size: 1.4rem;
+            color: var(--primary);
+            background: #fff;
+            border: 2px solid #111;
+            padding: 2px 14px;
+            border-radius: 20px;
+        }
+
+        .panel-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0f172a;
+        }
+
+        .panel-body {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .panel-image-container {
+            width: 100%;
+            border-radius: 12px;
+            border: 3px solid #111;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .panel-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .panel-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .scene-description {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #64748b;
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-left: 4px solid var(--accent);
+            border-radius: 4px;
+        }
+
+        .narration-box {
+            background: #fffbeb;
+            border: 2px solid #fde047;
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 2px 2px 0px #f59e0b;
+        }
+
+        .box-label {
+            font-family: 'Bangers', cursive;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            color: #b45309;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .narration-text {
+            font-family: 'Comic Neue', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+
+        .dialogue-box {
+            background: #f0f9ff;
+            border: 2px solid #38bdf8;
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 2px 2px 0px #0284c7;
+            position: relative;
+        }
+
+        .dialogue-box .box-label {
+            color: #0369a1;
+        }
+
+        .dialogue-text {
+            font-family: 'Comic Neue', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0c4a6e;
+            line-height: 1.4;
+        }
+
+        .footer-bar {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header-bar {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .panel-body {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <!-- Header -->
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>{{ character_name }}'s Comic Story</h1>
+            <p>Generated based on concept: "{{ prompt }}"</p>
+        </div>
+        <div class="action-buttons">
+            <a href="{{ pdf_link }}" target="_blank" class="btn btn-pdf" onclick="setTimeout(function(){ window.location.href='/export-success'; }, 1000);">
+                📥 Download PDF
+            </a>
+            <a href="/" class="btn btn-secondary">
+                ✨ New Comic
+            </a>
+        </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="panels-container">
+        {% for panel in layout %}
+        <div class="panel-card">
+            <div class="panel-header">
+                <span class="panel-number">PANEL {{ panel.panel_number }}</span>
+                <span class="panel-title">{{ panel.title }}</span>
+            </div>
+            <div class="panel-body">
+                <div class="panel-image-container">
+                    <img src="{{ panel.image_path }}" alt="Panel {{ panel.panel_number }} artwork">
+                </div>
+                <div class="panel-content">
+                    {% if panel.scene_description %}
+                    <div class="scene-description">
+                        <em>Scene: {{ panel.scene_description }}</em>
+                    </div>
+                    {% endif %}
+
+                    {% if panel.narration %}
+                    <div class="narration-box">
+                        <div class="box-label">Narrator</div>
+                        <div class="narration-text">{{ panel.narration }}</div>
+                    </div>
+                    {% endif %}
+
+                    {% if panel.dialogue %}
+                    <div class="dialogue-box">
+                        <div class="box-label">Dialogue</div>
+                        <div class="dialogue-text">{{ panel.dialogue }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Footer Action -->
+    <div class="footer-bar">
+        <a href="{{ pdf_link }}" target="_blank" class="btn btn-pdf" onclick="setTimeout(function(){ window.location.href='/export-success'; }, 1000);">
+            📥 Download Complete PDF
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

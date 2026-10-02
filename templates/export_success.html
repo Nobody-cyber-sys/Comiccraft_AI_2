@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Successful - ComicCraft</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Bangers&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #22c55e;
+            --primary-hover: #16a34a;
+            --secondary: #ffb703;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --comic-border: 3.5px solid #111111;
+            --shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f0fdf4;
+            background-image: radial-gradient(#bbf7d0 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .success-card {
+            width: 100%;
+            max-width: 540px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: var(--comic-border);
+            box-shadow: var(--shadow);
+            text-align: center;
+            padding: 48px 36px;
+        }
+
+        .icon-circle {
+            width: 90px;
+            height: 90px;
+            background: #dcfce7;
+            border: 3px solid #16a34a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 24px auto;
+            box-shadow: 0 4px 0 #16a34a;
+        }
+
+        h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: #15803d;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .btn-create {
+            display: inline-block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff5252 0%, #d90429 100%);
+            color: white;
+            border: var(--comic-border);
+            border-radius: 12px;
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+            box-shadow: 0 6px 0 #000;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #000;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ef233c 100%);
+        }
+
+        .btn-create:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="success-card">
+    <div class="icon-circle">🎉</div>
+    <h1>PDF Download Started!</h1>
+    <p>Your 5-panel comic book PDF has been generated and exported successfully.</p>
+    <a href="/" class="btn-create">✨ Create Another Comic</a>
+</div>
+
+</body>
+</html>
